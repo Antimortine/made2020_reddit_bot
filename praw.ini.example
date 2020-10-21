@@ -1,0 +1,14 @@
+; Example from https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html
+
+[bot]
+; Credentials (example)
+client_id=Y4PJOclpDQy3xZ
+client_secret=UkGLTe6oqsMk5nHCJTHLrwgvHpr ; Don't store your real secret in the repo!
+password=pni9ubeht4wd50gk ; Don't store your real password in the repo!
+username=fakebot1
+
+; User Agent (example)
+bot_name=MyBot
+bot_version=1.2.3
+bot_author=MyUser
+user_agent=script:%(bot_name)s:v%(bot_version)s (by u/%(bot_author)s)
