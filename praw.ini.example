@@ -1,14 +1,25 @@
-; Example from https://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html
+[DEFAULT]
+bots=bot1,bot2
+subreddits=AskReddit,AskMen,AskWomen,askscience
 
-[bot]
-; Credentials (example)
-client_id=Y4PJOclpDQy3xZ
+[bot1]
+client_id=CG3sM6Y36okwzw
 client_secret=UkGLTe6oqsMk5nHCJTHLrwgvHpr ; Don't store your real secret in the repo!
 password=pni9ubeht4wd50gk ; Don't store your real password in the repo!
-username=fakebot1
+username=Made2020RedditBot
+model_name=distilgpt2
+bot_name=Made2020RedditBot
+bot_version=0.0.1
+bot_author=Made2020RedditBot
+user_agent=script:%(bot_name)s:v%(bot_version)s (by u/%(bot_author)s)
 
-; User Agent (example)
-bot_name=MyBot
-bot_version=1.2.3
-bot_author=MyUser
+[bot2]
+client_id=CG3sM6Y36okwzw
+client_secret=UkGLTe6oqsMk5nHCJTHLrwgvHpr ; Don't store your real secret in the repo!
+password=pni9ubeht4wd50gk ; Don't store your real password in the repo!
+username=Made2020RedditBot
+model_name=gpt2
+bot_name=Made2020RedditBot
+bot_version=0.0.1
+bot_author=Made2020RedditBot
 user_agent=script:%(bot_name)s:v%(bot_version)s (by u/%(bot_author)s)
