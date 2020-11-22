@@ -81,8 +81,7 @@ class RedditBot():
 
         submission = self.reddit.submission('jqb8c9')  
         if not self.is_silent:
-            reply_text = f'{url}\n\n{title}\n\n{selftext}\n\n\nREPLY:\n\n' + reply_text
-            submission.reply(reply_text)
+            submission.reply(f'{url}\n\n{title}\n\n{selftext}\n\n\nREPLY:\n\n' + reply_text)
         logger.debug(f'made reply submission={title} reply={reply_text}')
 
     def _make_replies(self, submissions: List[Submission]) -> None:
