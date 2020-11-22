@@ -132,4 +132,5 @@ dmypy.json
 .idea/
 
 # Sensitive information
-praw.ini
+# praw.ini
+variables.sh

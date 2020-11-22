@@ -3,6 +3,7 @@ import random
 from datetime import datetime
 import time
 import logging
+import os
 
 from praw import Reddit
 from praw.models import Subreddit, Submission
@@ -10,14 +11,21 @@ from praw.models import Subreddit, Submission
 from model import Model
 
 
-SLEEP_BETWEEN_REPLIES = 3
+SLEEP_BETWEEN_REPLIES = 3 * 60
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class RedditBot():
     def __init__(self, praw_bot_name: str, is_silent: bool = True) -> None:
-        self.reddit = Reddit(praw_bot_name, config_interpolation='basic')
+        self.reddit = Reddit(
+            praw_bot_name, 
+            config_interpolation='basic',
+            client_id=os.environ[f'{praw_bot_name}_client_id'],
+            client_secret=os.environ[f'{praw_bot_name}_client_secret'],
+            password=os.environ[f'{praw_bot_name}_password'],
+            username=os.environ[f'{praw_bot_name}_username']
+        )
         self.model = Model(self.reddit.config.custom['model_name'])
         self.is_silent = is_silent
 
@@ -58,11 +66,24 @@ class RedditBot():
     def _prepare_reply(self, title: str, text: str) -> str:
         return self.model.generate_text(title, text)
 
+    # def _make_reply(self, submission: Submission) -> None:
+    #     reply_text = self._prepare_reply(submission.title, submission.selftext)
+    #     if not self.is_silent:
+    #         submission.reply(reply_text)
+    #     logger.debug(f'made reply submission={submission.title} reply={reply_text}')
+
     def _make_reply(self, submission: Submission) -> None:
         reply_text = self._prepare_reply(submission.title, submission.selftext)
+
+        url = submission.url
+        title = submission.title
+        selftext = submission.selftext
+
+        submission = self.reddit.submission('jqb8c9')  
         if not self.is_silent:
+            reply_text = f'{url}\n\n{title}\n\n{selftext}\n\n\nREPLY:\n\n' + reply_text
             submission.reply(reply_text)
-        logger.debug(f'made reply submission={submission.title} reply={reply_text}')
+        logger.debug(f'made reply submission={title} reply={reply_text}')
 
     def _make_replies(self, submissions: List[Submission]) -> None:
         for submission in submissions:
