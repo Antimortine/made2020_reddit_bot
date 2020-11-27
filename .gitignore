@@ -136,3 +136,4 @@ praw.ini
 variables.sh
 *.log
 check.ipynb
+*.ph
