@@ -33,7 +33,7 @@ def process_output(text: str) -> str:
         stop_position = match.start() if match else len(text)
         text = text[:stop_position]
         # Отрезание незаконченных фраз
-        end_punc = {'.', '!', '?'}
+        end_punc = {'.', '!'}
         if set(text) & end_punc:
             end_index = len(text) - 1
             while text[end_index] not in end_punc:

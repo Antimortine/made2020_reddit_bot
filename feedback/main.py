@@ -37,18 +37,18 @@ def get_submission_stat(submission: Submission, bot_comment: Comment) -> dict:
         if comment.id == bot_comment.id:
             continue
         scores.append(comment.score)
-    result['mean_score'] = sum(scores) / len(scores) if scores else None
-    result['median_score'] = median(scores) if scores else None
-    result['scores'] = scores
+    result['submission_comments_mean_score'] = sum(scores) / len(scores) if scores else None
+    result['submission_comments_median_score'] = median(scores) if scores else None
+    result['submission_comments_scores'] = scores
 
     replies_count = []
     for comment in submission.comments:
         if comment.id == bot_comment.id:
             continue
         replies_count.append(len(comment.replies.list()))
-    result['mean_replies_count'] = sum(replies_count) / len(replies_count) if replies_count else None
-    result['median_replies_count'] = median(replies_count) if replies_count else None
-    result['replies_counts'] = replies_count
+    result['submission_comments_mean_replies_count'] = sum(replies_count) / len(replies_count) if replies_count else None
+    result['submission_comments_median_replies_count'] = median(replies_count) if replies_count else None
+    result['submission_comments_replies_counts'] = replies_count
 
     return result
 

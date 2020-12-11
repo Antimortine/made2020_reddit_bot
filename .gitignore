@@ -138,3 +138,4 @@ variables.sh
 check.ipynb
 *.ph
 tmp.ipynb
+*.png
