@@ -9,16 +9,17 @@ import gdown
 
 PARENT_DIR = pathlib.Path(__file__).parent.parent.absolute()
 
-def contains_stop_words(title: str) -> bool:
+def contains_stop_words(text: str) -> bool:
     stop_words = [
         '[serious]', 'blm', 'abuser', 'abusing', 'racist', 
         'racism', 'shooting', 'shooter', 'police',
         'sexism', 'feminis', 'of colour', 'black people',
         'black wom', 'black man', 'black men', 'weapon',
-        'muslim', 'islam', 'terroris', ' rape ', 'rapist'
+        'muslim', 'islam', 'terroris', ' rape', 'rapist',
+        'black lives'
     ]
     for stop_word in stop_words:
-        if stop_word in title.lower():
+        if stop_word in text.lower():
             return True
     return False
 
@@ -54,7 +55,10 @@ def process_output(text: str) -> str:
                 break
             lines_filtered.append(line)
         text = '\n'.join(lines_filtered)
-
+        # Проверка на запрещенные слова
+        if contains_stop_words(text):
+            return None
+            
         return text
 
 def load_distilgpt2_custom() -> Any:

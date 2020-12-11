@@ -20,7 +20,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--is-silent', type=int, choices=[0, 1], default=1, required=False,
                         help='if is-silent = 1 bot will generate replies but not post them')
-    parser.add_argument('--test-submission', type=int, choices=[0, 1], default=1, required=False,
+    parser.add_argument('--test-submission', type=int, choices=[0, 1], default=0, required=False,
                         help='if test-submission = 1 bot will make replies to custom test submission')
     parser.add_argument('--manual', type=int, choices=[0, 1], default=0, required=False,
                         help='if manual = 1 you will choose what to post')
@@ -36,5 +36,5 @@ def main():
     bot.run()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -40,7 +40,7 @@ class RedditBot():
     def _get_replied_submissions(self) -> Set[str]:
         redditor = self.reddit.redditor(self.reddit.config.custom['bot_name'])
         summissions_id = set()
-        for comment in redditor.comments.hot():
+        for comment in redditor.comments.new(limit=None):
             summissions_id.add(comment.submission.id)
         return summissions_id
 

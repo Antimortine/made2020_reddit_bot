@@ -1,0 +1,37 @@
+[DEFAULT]
+bots=bot1,bot2,bot3
+subreddits=AskReddit
+test_submission=jqb8c9
+
+[bot1]
+client_id=...
+client_secret=...
+password=...
+username=Made2020RedditBot
+model_name=distil_gpt2_custom
+bot_name=Made2020RedditBot
+bot_version=0.0.1
+bot_author=Made2020RedditBot
+user_agent=script:%(bot_name)s:v%(bot_version)s (by u/%(bot_author)s)
+
+[bot2]
+client_id=...
+client_secret=...
+password=...
+username=maderedd
+model_name=gpt2_medium_custom
+bot_name=maderedd
+bot_version=0.0.1
+bot_author=maderedd
+user_agent=script:%(bot_name)s:v%(bot_version)s (by u/%(bot_author)s)
+
+[bot3]
+client_id=...
+client_secret=...
+password=...
+username=redmader
+model_name=gpt2_large
+bot_name=redmader
+bot_version=0.0.1
+bot_author=redmader
+user_agent=script:%(bot_name)s:v%(bot_version)s (by u/%(bot_author)s)
