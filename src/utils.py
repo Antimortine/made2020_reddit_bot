@@ -9,8 +9,23 @@ import gdown
 
 PARENT_DIR = pathlib.Path(__file__).parent.parent.absolute()
 
+def contains_stop_words(title: str) -> bool:
+    stop_words = [
+        '[serious]', 'blm', 'abuser', 'abusing', 'racist', 
+        'racism', 'shooting', 'shooter', 'police',
+        'sexism', 'feminis', 'of colour', 'black people',
+        'black wom', 'black man', 'black men', 'weapon',
+        'muslim', 'islam', 'terroris', ' rape ', 'rapist'
+    ]
+    for stop_word in stop_words:
+        if stop_word in title.lower():
+            return True
+    return False
+
 def process_output(text: str) -> str:
         # Отрезаем, если модель сама начала вопросы генерить
+        # Еще отрезаем все, что генерится в новом абзаце, часто оно плохое
+        text = text.strip(' ')
         text = text.strip('\n')
         stop_pattern = re.compile(r'[A-Z]:|\n\n')
         match = stop_pattern.search(text)
@@ -28,7 +43,7 @@ def process_output(text: str) -> str:
         text = text.replace(' Q:', '').replace(' A:', '')
         # Удаление повторяющихся пробелов
         text = re.sub(' +', ' ', text)
-        # Почти всегда ответы с таким началом плохие
+        # Почти всегда ответы с таким текстом плохие
         if '&amp,#x200B' in text:
             return None
         # Удаление строк с "Edit:"
@@ -230,11 +245,11 @@ def generate_gpt2_large(model: Any, tokenizer: Any,
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device('cpu')
     input_ids = torch.tensor(encodings_dict['input_ids']).to(device)
     sample_output = model.generate(input_ids.unsqueeze(0),                             
-                                   max_length=len(input_ids) + 100,
+                                   max_length=len(input_ids) + 80,
                                    do_sample=True, 
                                    num_beams=max(num_return_sequences, 5),
                                    top_p=0.75, 
-                                   temperature=1.1,
+                                #    temperature=1.1,
                                    no_repeat_ngram_size=4, 
                                    num_return_sequences=num_return_sequences,
                                    early_stopping=True)

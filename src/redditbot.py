@@ -54,7 +54,7 @@ class RedditBot():
             for submission in subreddit.hot(limit=check_hot_count):
                 if submission.id in replied_submissions_id:
                     continue
-                if '[serious]' in submission.title.lower():
+                if contains_stop_words(submission.title):
                     continue
                 submissions.append(submission)
 
@@ -63,14 +63,15 @@ class RedditBot():
 
         submissions = sorted(submissions, key=lambda x: x.created_utc, reverse=True)
 
-        submissions = submissions[:max_submission_count]
+        submissions = submissions[:max_submission_count*4]
+        submissions = random.sample(submissions, min(len(submissions), max_submission_count))
         logger.debug(f'found submissions: {submissions}')
         return submissions
 
     def _prepare_reply(self, title: str, text: str, num_return_sequences: int = 1) -> [str]:
         replies = self.model.generate_text(title, text, num_return_sequences)
         processed_replies = [process_output(reply) for reply in replies]
-        return processed_replies
+        return processed_replies, replies
 
     def _make_reply(self, submission: Submission, reply_text: str = None) -> None:
         url = submission.url
@@ -78,11 +79,12 @@ class RedditBot():
         selftext = submission.selftext
 
         if reply_text is None:
-            reply_text = self._prepare_reply(title, selftext)[0]
+            reply_text, generated_text = self._prepare_reply(title, selftext)
+            reply_text, generated_text = reply_text[0], generated_text[0]
         
 
         if not reply_text or reply_text == ' ': 
-            logger.debug(f'FAIL: generated reply to submission={title} was very bad')
+            logger.debug(f'FAIL: generated reply to submission={title} was very bad ({generated_text})')
             return
 
         if self.test_submission:
@@ -123,7 +125,8 @@ class RedditBot():
         else:
             reply_texts_list = []
             for submission in submissions:
-                reply_texts_list.append(self._prepare_reply(submission.title, submission.selftext, 10))
+                reply_text, _ = self._prepare_reply(submission.title, submission.selftext, 10)
+                reply_texts_list.append(reply_text)
             replies = []
             for submission, reply_texts in zip(submissions, reply_texts_list):
                 replies.append(self._choose_reply_manual(submission, reply_texts))
