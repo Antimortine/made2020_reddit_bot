@@ -16,7 +16,7 @@ def contains_stop_words(text: str) -> bool:
         'sexism', 'feminis', 'of colour', 'black people',
         'black wom', 'black man', 'black men', 'weapon',
         'muslim', 'islam', 'terroris', ' rape', 'rapist',
-        'black lives'
+        'black lives', 'covid', 'coronavirus', 'pandemic'
     ]
     for stop_word in stop_words:
         if stop_word in text.lower():
@@ -33,7 +33,7 @@ def process_output(text: str) -> str:
         stop_position = match.start() if match else len(text)
         text = text[:stop_position]
         # Отрезание незаконченных фраз
-        end_punc = {'.', '!'}
+        end_punc = {'.', '!', '?'}
         if set(text) & end_punc:
             end_index = len(text) - 1
             while text[end_index] not in end_punc:
