@@ -29,6 +29,7 @@ def main():
     config = configparser.ConfigParser()
     config.read(f'{HOME_DIR}/.config/praw.ini')
     bots = config['DEFAULT']['bots'].split(',')
+    logger.debug(f'avialable bots: {bots}')
     bot_id = random.choice(bots)
     bot = RedditBot(bot_id, args.is_silent, args.test_submission, args.manual)
     logger.debug(f'created bot {bot_id}')
