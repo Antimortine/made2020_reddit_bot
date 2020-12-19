@@ -137,3 +137,5 @@ variables.sh
 *.log
 check.ipynb
 *.ph
+tmp.ipynb
+*.png
